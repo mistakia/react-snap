@@ -127,14 +127,16 @@ const enableLogging = opt => {
 const getLinks = async opt => {
   const { page } = opt;
   const anchors = await page.evaluate(() =>
-    Array.from(document.querySelectorAll("a,link[rel='alternate']")).map(anchor => {
-      if (anchor.href.baseVal) {
-        const a = document.createElement("a");
-        a.href = anchor.href.baseVal;
-        return a.href;
+    Array.from(document.querySelectorAll("a,link[rel='alternate']")).map(
+      anchor => {
+        if (anchor.href.baseVal) {
+          const a = document.createElement("a");
+          a.href = anchor.href.baseVal;
+          return a.href;
+        }
+        return anchor.href;
       }
-      return anchor.href;
-    })
+    )
   );
 
   const iframes = await page.evaluate(() =>
@@ -159,7 +161,9 @@ const crawl = async opt => {
     publicPath,
     sourceDir
   } = opt;
-  const exclude = options.exclude.map(g => glob(g, { extended: true, globstar: true}));
+  const exclude = options.exclude.map(g =>
+    glob(g, { extended: true, globstar: true })
+  );
   let shuttingDown = false;
   let streamClosed = false;
 
@@ -205,7 +209,12 @@ const crawl = async opt => {
     const isOnAppPort = port && port.toString() === options.port.toString();
 
     if (exclude.filter(regex => regex.test(pathname)).length > 0) return;
-    if (hostname === "localhost" && isOnAppPort && !uniqueUrls.has(newUrl) && !streamClosed) {
+    if (
+      hostname === "localhost" &&
+      isOnAppPort &&
+      !uniqueUrls.has(newUrl) &&
+      !streamClosed
+    ) {
       uniqueUrls.add(newUrl);
       enqued++;
       queue.write(newUrl);

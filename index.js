@@ -52,6 +52,7 @@ const defaultOptions = {
   removeBlobs: true,
   fixInsertRule: true,
   skipThirdPartyRequests: false,
+  excludedThirdPartyRequests: [],
   includedThirdPartyRequests: [],
   cacheAjaxRequests: false,
   http2PushManifest: false,
@@ -272,7 +273,8 @@ const inlineCss = async opt => {
   const minimalcssResult = await minimalcss.minimize({
     urls: [pageUrl],
     skippable: request =>
-      options.skipThirdPartyRequests && !request.url().startsWith(basePath),
+      options.excludedThirdPartyRequests.some(d => request.url().startsWith(d)) ||
+      (options.skipThirdPartyRequests && !request.url().startsWith(basePath)),
     browser: browser,
     userAgent: options.userAgent
   });
@@ -516,8 +518,9 @@ const fixParcelChunksIssue = ({
 }) => {
   return page.evaluate(
     (basePath, http2PushManifest, inlineCss) => {
-      const localScripts = Array.from(document.scripts)
-        .filter(x => x.src && x.src.startsWith(basePath))
+      const localScripts = Array.from(document.scripts).filter(
+        x => x.src && x.src.startsWith(basePath)
+      );
 
       const mainRegexp = /main\.[\w]{8}\.js/;
       const mainScript = localScripts.find(x => mainRegexp.test(x.src));
@@ -842,7 +845,7 @@ const run = async (userOptions, { fs } = { fs: nativeFs }) => {
         );
         routePath = normalizePath(routePath);
         if (routePath !== newPath) {
-          console.log(newPath)
+          console.log(newPath);
           console.log(`💬  in browser redirect (${newPath})`);
           addToQueue(newRoute);
         }
