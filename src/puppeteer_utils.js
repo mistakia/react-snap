@@ -227,7 +227,7 @@ const crawl = async opt => {
   const browser = await puppeteer.launch({
     headless: options.headless,
     args: options.puppeteerArgs,
-    executablePath: options.puppeteerExecutablePath,
+    executablePath: options.puppeteer_executable_path,
     ignoreHTTPSErrors: options.puppeteerIgnoreHTTPSErrors,
     handleSIGINT: false
   });

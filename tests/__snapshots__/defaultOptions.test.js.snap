@@ -37,7 +37,7 @@ Object {
     "cache": true,
   },
   "puppeteerArgs": Array [],
-  "puppeteerExecutablePath": undefined,
+  "puppeteer_executable_path": undefined,
   "puppeteerIgnoreHTTPSErrors": false,
   "removeBlobs": true,
   "removeScriptTags": false,

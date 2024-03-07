@@ -29,8 +29,8 @@ const defaultOptions = {
     cache: true
   },
   puppeteerArgs: [],
-  puppeteerExecutablePath: undefined,
-  puppeteerIgnoreHTTPSErrors: false,
+  puppeteer_executable_path: "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome",
+  puppeteer_ignore_https_errors: false,
   publicPath: "/",
   minifyCss: {},
   minifyHtml: {
